@@ -1,0 +1,11 @@
+function PlanToFact(){
+var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+var sheetFact = spreadsheet.getSheetByName("ФАКТ");
+var sheetData = spreadsheet.getSheetByName("выполнено");
+var data = sheetData.getDataRange();
+var Avals = sheetFact.getRange("A1:A").getValues();
+var Alast = Avals.filter(String).length;
+//var row = sheetFact.getLastRow();
+Logger.log(Alast)
+data.copyTo(sheetFact.getRange(Alast+1,1), SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+}
