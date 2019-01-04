@@ -12,3 +12,9 @@ https://github.com/torpedonosec80/google_app_script/blob/master/script%20PlanToF
 
 script searchDOCs
 https://github.com/torpedonosec80/google_app_script/blob/master/script%20searchDOCs
+
+script sborLZ
+https://github.com/torpedonosec80/google_app_script/blob/master/script%20sborLZ
+
+script sborQMS
+https://github.com/torpedonosec80/google_app_script/blob/master/script%20sborQMS
