@@ -1,0 +1,29 @@
+function searchDOCs() {
+  
+  var folder = DriveApp.getFolderById('1uPhja8_elolPxBzCIQuxxhmm6o9ajv1Q');
+  var array = []
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("ссылки")
+  var files = folder.getFiles();
+  while (files.hasNext()) {
+    var file = files.next();
+    var fileId = file.getId();
+    var fileTime = file.getLastUpdated();
+    var fileName = file.getName();
+    var fileUrl = file.getUrl();
+    var sheets = '';
+    if(file.getMimeType() === 'application/vnd.google-apps.spreadsheet'){
+      sheets = readSpreadsheet(fileId);
+    }
+    array = array.concat([[fileUrl, sheets, fileTime]])
+    Logger.log(array)
+  }
+  var r = ss.getRange(11, 1, array.length, array[0].length)
+  ss.getRange("A11:C").clearContent()
+  r.setValues(array)
+}
+
+function readSpreadsheet(id){
+  return SpreadsheetApp.openById(id).getSheets().map(function(sheet){
+    return sheet.getName();
+  }).join('#');
+}
