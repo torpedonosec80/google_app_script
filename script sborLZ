@@ -1,0 +1,24 @@
+function sborLZ() {
+  var ui = SpreadsheetApp.getUi();
+  var result = ui.alert(
+     'Вставка данных по ЛЗ',
+     'Вы действительно хотите продолжить? Процесс удалит текущие данные по ЛЗ и займет продолжительное время. Так же имеет смысл проверить что ссылки на ЛЗ обновлены. Заполняем или проверим?',
+      ui.ButtonSet.YES_NO);
+  if (result == ui.Button.YES) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet() //определяем таблицу
+  var urls_names = ss.getSheetByName("ссылки ЛЗ").getRange("A2:B2").getValues() //определяем лист с ссылками
+  var sheetLZ = ss.getSheetByName("22193")  //определяем лист сбора
+  var arr = []
+  var ss0 = SpreadsheetApp.openByUrl(urls_names[0][0])
+  var sheet0 = ss0.getSheetByName(urls_names[0][1])
+  ss0.setSpreadsheetTimeZone('Europe/Moscow')
+  var rangeOFdata = "A2:AT"
+  var rangeOFpaste = "A1:AR"
+  var data = sheet0.getRange(rangeOFdata).getValues()
+  arr = arr.concat(data.filter(function(row){return row[0]!='' && row[1]!='ГП' && (row[14]=='Центр' || row[14]=='Регион')}))
+  sheetLZ.getRange(rangeOFpaste).clear()
+  sheetLZ.getRange(1, 1, arr.length, arr[0].length).setValues(arr)
+  } else {
+    ui.alert('Правильно! Подумай!');
+  }
+}
