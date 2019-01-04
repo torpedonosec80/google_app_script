@@ -1,0 +1,10 @@
+function MozToPlan(){
+var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+var sheetNotInPlan = spreadsheet.getSheetByName("нет в графике");
+var sheetPlan = spreadsheet.getSheetByName("ПЛАН-ГРАФИК");
+var data = sheetNotInPlan.getDataRange();
+var Avals = sheetPlan.getRange("A1:A").getValues();
+var Alast = Avals.filter(String).length;
+/*var row = sheetPlan.getLastRow();*/
+data.copyTo(sheetPlan.getRange(Alast+1,1), SpreadsheetApp.CopyPasteType.PASTE_VALUES, false);
+}
