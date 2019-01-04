@@ -1,0 +1,11 @@
+function onOpen() {
+  var ui = SpreadsheetApp.getUi();
+  // Or DocumentApp or FormApp.
+  ui.createMenu('Скрипты')
+      .addItem('Перенос в план', 'MozToPlan')
+      .addSeparator()
+      .addItem('Перенос в Факт', 'PlanToFact')
+      .addSeparator()
+      .addItem("найти Таблицы", "searchDOCs")
+      .addToUi();
+}
