@@ -1,0 +1,45 @@
+function sborQMS() {
+  var ui = SpreadsheetApp.getUi();
+  var result = ui.alert(
+     'Вставка данных из QMS',
+     'Вы действительно хотите продолжить? Процесс удалит текущие данные по звонкам и займет продолжительное время. Так же имеет смысл проверить что ссылки на QMS обновлены. Заполняем или подумаем?',
+      ui.ButtonSet.YES_NO);
+  if (result == ui.Button.YES) {
+  //перед вставкой данных нужно удалить формулы с листов 22193, QMS и QMS сбор статусов по заявкам а после вставки данных вернуть их на место
+  var ss = SpreadsheetApp.getActiveSpreadsheet() //определяем таблицу
+  var urls_names = ss.getSheetByName("ссылки QMS").getDataRange().getValues() //определяем лист с ссылками
+  var sheetQMS = ss.getSheetByName("QMS")  //определяем лист сбора QMS
+  var sheetQMSanalyze = ss.getSheetByName("QMS сбор статусов по заявкам") //определяем лист отбора QMS
+  var sheet22193 = ss.getSheetByName("22193") //лист с ЛЗ
+  //var rangeFormula22193 = "AS2" //где формула по ЛЗ
+  //var rangeFormulaQMS = "I2" //где формула QMS
+  //var rangeFormulaQMSanalyze = "A1" //где формула отбора звонков
+  //sheet22193.getRange(rangeFormula22193).clear() //чистим лз
+  //sheetQMS.getRange(rangeFormulaQMS).clear()  //чистим звонки
+  //sheetQMSanalyze.getRange(rangeFormulaQMSanalyze).clear()  //чистим анализ звонков
+  var rangeOFdata = "A2:H";
+  var rangeOFpaste = "A1:I";
+  var arr = []
+  for(var t = 1; t<urls_names.length; t++){
+    var ss0 = SpreadsheetApp.openByUrl(urls_names[t][0])
+    var sheet0 = ss0.getSheetByName(urls_names[t][1])
+    var data = sheet0.getRange(rangeOFdata).getValues()
+    arr = arr.concat(data.filter(function(row){return row[0]!=''}))
+  }
+  sheetQMS.getRange(rangeOFdata).clear()
+  sheetQMS.getRange(2, 1, arr.length, arr[0].length).setValues(arr)
+  
+  //Utilities.sleep(2000)
+  
+  //sheet22193.getRange(rangeFormula22193).setFormula("ARRAYFORMULA(if(indirect(\"A2:A\")<>\"\";iferror(vlookup(indirect(\"A2:A\");indirect(\"'QMS сбор статусов по заявкам'!$A:$B\");2;0);\"нет звонков\");\"\"))")
+  //sheetQMS.getRange(rangeFormulaQMS).setFormula("ARRAYFORMULA(if(indirect(\"E2:E\")<>\"\";iferror(vlookup(indirect(\"E2:E\");indirect(\"'22193'!$A:$P\");16;0);\"\");\"\"))")
+  //sheetQMSanalyze.getRange(rangeFormulaQMSanalyze).setFormula("unique(QUERY({indirect(\"QMS!A:I\")};\"select Col5 where Col9<>''\"))")
+
+
+  
+  
+
+} else {
+    ui.alert('Верное решение! Спешка тут ни к чему!');
+  }
+}
